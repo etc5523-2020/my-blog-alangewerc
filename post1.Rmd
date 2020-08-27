@@ -1,5 +1,5 @@
 ---
-title: "post1"
+title: "Analysis of Covid-19 Data in Bolivia"
 author: "Alan Gewerc"
 date: "8/27/2020"
 output: html_document
@@ -9,22 +9,42 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r library, echo=FALSE}
+library('dplyr')
+library('DT')
+
+```
+
+
+
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+
+```{r cars, , echo=FALSE}
+data <- read.csv('owid-covid-data.csv')
+bolivia_df <- data %>% 
+  filter(location  == "Bolivia")
+
+
+cols <- c('date', 'total_cases', 'new_cases', 'total_deaths', 'new_deaths', 
+                          'total_cases_per_million', 'new_cases_per_million', 'total_deaths_per_million', 'new_deaths_per_million',
+                          'new_tests', 'total_tests', 'total_tests_per_thousand', 'new_tests_per_thousand', 'positive_rate')
+
+bolivia_df <- bolivia_df[cols]
+bolivia_df <- na.omit(bolivia_df)
+
+colnames(bolivia_df) <- c('Date', 'Total Cases', 'New Cases', 'Total Deaths', 'New Deaths',
+                          'Total Cases per Million', 'New Cases per Million', 'Total Deaths per Million', 'New Deaths per Million',
+                          'New Tests', 'Total Tests', 'Total Tests per Thousand', 'New Tests per Thousand', 'Positive Rate')
+
+
+head(bolivia_df)
+
+datatable(bolivia_df, filter = 'top', options = list(
+  pageLength = 25, autoWidth = TRUE))
+
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
