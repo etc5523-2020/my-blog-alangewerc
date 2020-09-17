@@ -1,14 +1,14 @@
 ---
-title: "Analysis of Covid-19 Data in Bolivia"
+title: "Analysis of Covid-19 Data in Argentina"
 author: "Alan Gewerc"
-date: "8/27/2020"
+date: "9/17/2020"
 output: html_document
 ---
 
 <br>
 
-<img src="image.jpg" alt="drawing" width="550"/><br><br>
-*Image Source: Institute of Foregin Affairs*
+<img src="argentina-covid.jpg" alt="drawing" height="300" width="950"/><br><br>
+*Image Source: Getty Images*
 
 <br><br>
 
@@ -18,23 +18,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r library, echo=FALSE, include=FALSE}
 library('dplyr')
-library('DT')
-library('lubridate')
-library('kableExtra')
-library('devtools')
-library('formattable')
-library('knitr')
-library('remotes')
+library('ggplot2')
 library('dplyr')
-library('DT')
+
 ```
 
 
-Most countries in the world were severely affected by COVID-19. Death, hardship and poverty are a few of the consequences observed in most regions. In Latin-America, unfortunately, COVID-19 was no exception. The continent is experiencing big suffering as consequence of the pandemic. The region is already one of the poorest in the world and has a significant housing deficit. Under this circumstances, families are obliged to live together in small homes making the region a potential hotspot for the virus spread.  
+In the last post, we have analysed the current situation in Bolivia with regards to the damage caused by COVID-19. To do so, we used different formats of tables that allowed one to track the evolution of cases, deaths and much more. <br>
 
-Our analysis in this post will be focused in Bolivia which is suffering the consequences of COVID-19 as every country. Nevertheless, compared to its neighbors in Latin-America Bolivia is achieving superior results handling the spread of the virus. 
+In the current post, we will keep exploring South-America, but now we will examine Argentina. The country is the second economy in the region, and the third larger population. With respect to COVID-19, more than 350.000 cases have been observed locally, and more than 7.000 people have lost their lifes. 
 
-While countries like Brazil and Peru had in the end of August a total of `17265.738` and `18421.231` cases per million of habitats respectively, Bolivia `9509.014`. The government implemented sequential lockdowns over the year that apparently were able to contain `flatten the curve`. 
+We will use different tools to build visualisations that allow one to understand the current situation of the country with respect to the evolution of the pandemic in the region during the year. Additionally, we will also explore the visually eventual differences of the spread of the virus according to geographical regions of the country. 
 
 <br>
 
@@ -66,11 +60,9 @@ We are exposing in the table the number of new daily cases and deaths, but also 
 
 ```{r interactive, , echo=FALSE}
 data <- read.csv('owid-covid-data.csv')
-bolivia_df <- data %>% 
-  filter(location  == "Bolivia")
 
 bolivia_df <- data %>% 
-  filter(location  == "Bolivia")
+  filter(location  == "Argentina")
 
 bolivia_df$date <- as.Date(bolivia_df$date, format = "%m/%d/%Y")
 bolivia_df$date <- format(bolivia_df$date, "%Y-%b-%d")
@@ -86,9 +78,6 @@ bolivia_df <- na.omit(bolivia_df)
 colnames(bolivia_df) <- c('Date', 'New Cases / Million Hab.', 'New Deaths / Million Hab.', 'Total Cases / Million Hab.', 'Total Deaths / Million Hab.',
                           'New Tests per Thousand', 'Positive Rate')
 
-
-datatable(bolivia_df, filter = 'top', options = list(
-  pageLength = 5, autoWidth = TRUE))
 
 ```
 
@@ -135,24 +124,6 @@ bolivia_df$date <- months(bolivia_df$date)
 date_list <- split(bolivia_df$new_cases_per_million, bolivia_df$date)
 date_list <- list(date_list$March, date_list$April ,date_list$May,
                   date_list$June ,date_list$July, date_list$August)
-
-bolivia_df %>% 
-  group_by(date) %>% 
-  summarise(Total  = round(sum(new_cases_per_million),2),
-            Average = round(mean(new_cases_per_million),2),
-            Median = round(median(new_cases_per_million),2),
-            Max = round(max(new_cases_per_million),2),
-            Minimum = round(min(new_cases_per_million),2),
-            Stand.Dev. = round(sd(new_cases_per_million),2),
-            Boxplot = '',
-            Histogram = '',
-            .groups = 'drop') %>%
-  arrange(Median) %>%
-  kbl(booktabs = T) %>%
-  kable_classic(full_width = F) %>%
-  column_spec(8, image = spec_boxplot(date_list)) %>%
-  column_spec(9, image = spec_hist(date_list))
-
 
 ```
 
