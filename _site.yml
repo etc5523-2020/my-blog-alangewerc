@@ -6,7 +6,7 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "Bolivia: COVID-19 "
-      href:  post1.html
+      href:  covid-bolivia.html
 output:
   html_document:
     theme: cosmo
