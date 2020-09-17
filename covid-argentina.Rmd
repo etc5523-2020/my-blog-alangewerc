@@ -7,20 +7,30 @@ output: html_document
 
 <br>
 
-<img src="argentina-covid.jpg" alt="drawing" height="300" width="950"/><br><br>
+<img src="argentina-covid.jpg" alt="drawing" height="300" width="750"/><br><br>
 *Image Source: Getty Images*
 
 <br><br>
 
-```{r setup,  echo=FALSE, include=FALSE}
+```{r setup, echo=FALSE, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r library, echo=FALSE, include=FALSE}
 library('dplyr')
 library('ggplot2')
-library('dplyr')
+library('reshape2')
+library('gpclib')
 
+library(maptools)
+library(rgdal)
+library(raster)
+library(rgeos)
+library(ggalt)
+library(ggthemes)
+library(viridis)
+library(magrittr)
+library(osmdata)
 ```
 
 
@@ -34,65 +44,139 @@ We will use different tools to build visualisations that allow one to understand
 
 ## The Dataset
 
-The dataset was sourced from the website [Our World in Data](https://ourworldindata.org/coronavirus/country/bolivia?country=~BOL). The website is from the organization with the same name, based on Oxford University. It has a research team focused on providing high quality open-source data for the scientific community across the world to tackle challenging problems such as pandemic.  
+As in the previous post, We are working with a dataset sourced from the website [Our World in Data](https://ourworldindata.org/coronavirus/country/bolivia?country=~BOL). The website is from the organization with the same name, based on Oxford University. 
 
-We have downloaded the `owid-covid-data.csv` file, which has COVID information about more than 190 countries across the world. Since our analysis will focus exclusively on Bolivia, we have filtered out all other countries from the table. <br>
+We have downloaded the `owid-covid-data.csv` file, which has COVID information about more than 190 countries across the world. Since our analysis will focus exclusively on Argentina, we have filtered out all other countries from the table. <br>
 
 The dataset is a multivariate time-series that comprises multiple features from the period of the 31th of December, 2019 to the 26th of August of 2020.
 It has 40 columns with 36 features of every country. Some directly related to the Covid-19 such as the total number of deaths, total number of deaths per million habitats number of tests per day and positive rate of tests. Other data are social and economic variables that are indirectly related to covid-19 spread such as the median age of the population, GDP per capita, percentage of smokers and much more. <br>
 
-Given our restrictions of time and resources, unfortunately we will work only with a fraction of the data, tat will allow us to understand the spread of the virus in Bolivia.  
-
 <br>
 
-## Table 1 - Covid Data from Bolivia 
+## Visualisation 1 - Evolution of COVID-19 in Argentina 
 
-In the following table one can observe the evolution of the total number of cases and deaths of COVID-19 in Bolivia across the year of 2020. The first recorded case in Bolivia was in the 21-Mar-2020, long after most countries in the world. <br>
+In the following visualisations, we can observe the evolution of the number of cases and deaths of COVID-19 in Argentina across the year of 2020. The first recorded case in Argentina was in the 03-Apr-2020, after most countries in the world. <br>
 
-The table is not in absolute numbers but in relative ones. All cases and deaths are in a 1:million hab. scale. This scale makes it easy to compare different countries that different populations. 
+In the following plots, for variables can be observed:
+1. The number of new cases of Covid-19 in Argentina each day
+2. The number of new deaths of Covid-19 in Argentina each day
+3. The accumulated number of cases of Covid-19 in Argentina each day
+3. The accumulated number of deaths of Covid-19 in Argentina each day
 
-The table is interactive, so one can choose different ranges of data from the table. <br>
+In the each plots there are two y-axis. The reason behind it is that there is a relevant difference in magnitude between the presented variables in each plot. 
 
-We are exposing in the table the number of new daily cases and deaths, but also accumulated numbers. Additionally, in the table we can see the number of tests and the positive rate. 
-
-
+In the plot on the left one can see the number of total cases of covid-19 x new cases in Argentina. In the plot on the right one can see the number of total deaths of covid-19 x new deaths. Acummulated variables are represented as lines while the bars represent new numbers.   
 
 
-```{r interactive, , echo=FALSE}
-data <- read.csv('owid-covid-data.csv')
+```{r interactive, echo=FALSE}
 
-bolivia_df <- data %>% 
+# read the data
+data <- read.csv('owid-covid-data.csv', stringsAsFactors = FALSE)
+
+# filter Argentina
+argentina_df <- data %>% 
   filter(location  == "Argentina")
 
-bolivia_df$date <- as.Date(bolivia_df$date, format = "%m/%d/%Y")
-bolivia_df$date <- format(bolivia_df$date, "%Y-%b-%d")
+# manipulate date
+argentina_df$date <- seq(as.Date("2020-02-11"), by="1 day", length.out=198)
+
+# Select columns and create new dataframes
+col_cases <- c('date', 'new_cases', 'total_cases')
+col_deaths <- c('date', 'new_deaths', 'total_deaths')
+argentina_deaths <- argentina_df[col_deaths]
+argentina_cases <- argentina_df[col_cases]
+
+# data cleaning - change data types and remove NAs
+argentina_deaths <- na.omit(argentina_deaths)
+argentina_cases <- na.omit(argentina_cases)
+argentina_deaths$new_deaths <- as.numeric(argentina_deaths$new_deaths)
+argentina_deaths$total_deaths <- as.numeric(argentina_deaths$total_deaths)
+argentina_cases$new_cases <- as.numeric(argentina_cases$new_cases)
+argentina_cases$total_cases <- as.numeric(argentina_cases$total_cases)
+
+# Change Names of Columns
+colnames(argentina_cases) <- c('Date', 'New_Cases', 'Total_Cases')
+colnames(argentina_deaths) <- c('Date', 'New_Deaths', 'Total_Deaths')
+
+##################
+##################
+# Visualization
+##################
+##################
+
+useColor1 <- rgb(0.2, 0.6, 0.9, 1)
+useColor2 <- "#69b3a2"
+coeff <- 1/20
 
 
-cols <- c('date', 'new_cases_per_million', 'new_deaths_per_million', 'total_cases_per_million', 'total_deaths_per_million', 'total_tests_per_thousand',
-          'positive_rate')
+  
+#### plot1
+
+ggplot(argentina_cases, aes(x=Date)) +
+  
+  geom_col( aes(y=New_Cases),size= 1, fill= useColor2, color="black", alpha=.4) + 
+  geom_line( aes(y=Total_Cases*coeff), size=2, color = useColor1) +
+  
+  scale_y_continuous(
+    
+    labels = scales::number,
+
+    # Features of the first axis
+    name = "New Cases",
+    
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~./coeff, name="Total Cases", labels = scales::number)
+  ) + 
+  
+  theme(
+    axis.title.y = element_text(color = useColor2, size=13),
+    axis.title.y.right = element_text(color = useColor1, size=13)
+  ) +
+  theme_bw() + ggtitle("Evolution of Cases of Covid-19")
 
 
-bolivia_df <- bolivia_df[cols]
-bolivia_df <- na.omit(bolivia_df)
+#### plot2
 
-colnames(bolivia_df) <- c('Date', 'New Cases / Million Hab.', 'New Deaths / Million Hab.', 'Total Cases / Million Hab.', 'Total Deaths / Million Hab.',
-                          'New Tests per Thousand', 'Positive Rate')
+ggplot(argentina_deaths, aes(x=Date)) +
+  
+  geom_col( aes(y=New_Deaths),size= 1, fill= useColor2, color="black", alpha=.4) + 
+  geom_line( aes(y=Total_Deaths*coeff), size=2, color = useColor1) +
+  
+  scale_y_continuous(
+    
+    labels = scales::number,
+
+    # Features of the first axis
+    name = "New Deaths",
+    
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~./coeff, name="Total Deaths", labels = scales::number)
+  ) + 
+  
+  theme(
+    axis.title.y = element_text(color = useColor2, size=13),
+    axis.title.y.right = element_text(color = useColor1, size=13)
+  ) +
+  theme_bw() + ggtitle("Evolution of Deaths of Covid-19")
+
+  
 
 
 ```
 
+
+
+
 <br>
 
 Some notes about an attentive observation of the table are the following:<br>
-* The number of cases has increased sharply over days and months and it has gone through the pic recently. <br>
-* The number of tests has increased as well, which is something positive, as we know testing is a key strategy to fight the virus. <br>
-* The number of positive rates has also increased over the year, which might be associated with more accurate tests or an increase in the number of cases.
-
-
+* The number of cases and deaths follow extremely similar patterns, as expected.
+* The pandemic has not gone through the pic yet in Argentina. The country is still experimenting a growth trend.
+* Observing rough numbers, the mortality rate in Argentina is about 2%. There have been ~ 7.5 thousand deaths and 300 thousand cases. 
 
 <br>
 
-## Table 2 - Statistical Analysis - Covid Data from Bolivia 
+## Table 2 - Analysis of Cases per Region 
 
 Now, we will dive in the statistics of the new cases of Covid-19 in Bolivia. We will make this analysis by each month. We will how was the distribution of the number of new cases every month, the dispersion, the mean, median and so on.
 
@@ -103,27 +187,44 @@ The central points one can observe in the table are the following:
 3. As the number of cases increases every month, so does the dispersion of the data. It can be observed in the boxplots.  
 
 
-```{r test , results='asis', echo=FALSE}
+```{r test , results='asis', echo=FALSE, warning = FALSE, message = FALSE}
 
-data <- read.csv('owid-covid-data.csv')
+# as stated in the other answer, this is the same as your shapefile
+arg_adm <- raster::getData('GADM', country='ARG', level=1)
 
-bolivia_df <- data %>% 
-  filter(location  == "Bolivia")
+# make the polygons a bit less verbose
+gSimplify(arg_adm, 0.01, topologyPreserve=TRUE) %>% 
+  SpatialPolygonsDataFrame(dat=arg_adm@data) -> arg_adm
 
-cols <- c('date', 'new_cases_per_million')
+# turn them into a data frame
+arg_map <- fortify(arg_adm, region="NAME_1")
 
-bolivia_df <- bolivia_df[cols]
+# reproducibly simulate some data
+puntos <- read.csv('argentina_covid.csv')
 
-bolivia_df <- na.omit(bolivia_df)
+# plot it
+gg <- ggplot() 
 
-bolivia_df$date <- as.Date(bolivia_df$date, format = "%m/%d/%Y")
-bolivia_df$date <- as.Date(bolivia_df$date, format="%B %d %Y")
+# necessary in the new world of ggplot2 mapping O_o
+gg <- gg + geom_blank(data=arg_map, aes(long, lat))
 
+# draw the base polygon layer
+gg <- gg + geom_map(data=arg_map, map=arg_map, 
+                    aes(map_id=id),
+                    color="#b2b2b2", size=0.15, fill=NA)
 
-bolivia_df$date <- months(bolivia_df$date)
-date_list <- split(bolivia_df$new_cases_per_million, bolivia_df$date)
-date_list <- list(date_list$March, date_list$April ,date_list$May,
-                  date_list$June ,date_list$July, date_list$August)
+# fill in the polygons
+gg <- gg + geom_map(data=puntos, 
+                    map=arg_map,
+                    aes(fill=log_numbers, 
+                        map_id=City),
+                    color="#b2b2b2", 
+                    size=0.15)
+
+gg <- gg + scale_fill_viridis(option = 'inferno')
+gg <- gg + theme_map()
+gg <- gg + theme(legend.position=c(0.8, 0.1))
+gg
 
 ```
 

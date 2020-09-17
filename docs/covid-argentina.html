@@ -278,6 +278,9 @@ $(document).ready(function () {
 <li>
   <a href="covid-bolivia.html">Bolivia: COVID-19 </a>
 </li>
+<li>
+  <a href="covid-bolivia.html">Argentina: COVID-19 </a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -298,7 +301,7 @@ $(document).ready(function () {
 
 
 <p><br></p>
-<p><img src="argentina-covid.jpg" alt="drawing" height="300" width="950"/><br><br> <em>Image Source: Institute of Foregin Affairs</em></p>
+<p><img src="argentina-covid.jpg" alt="drawing" height="300" width="750"/><br><br> <em>Image Source: Getty Images</em></p>
 <p><br><br></p>
 <p>In the last post, we have analysed the current situation in Bolivia with regards to the damage caused by COVID-19. To do so, we used different formats of tables that allowed one to track the evolution of cases, deaths and much more. <br></p>
 <p>In the current post, we will keep exploring South-America, but now we will examine Argentina. The country is the second economy in the region, and the third larger population. With respect to COVID-19, more than 350.000 cases have been observed locally, and more than 7.000 people have lost their lifes.</p>
@@ -306,24 +309,24 @@ $(document).ready(function () {
 <p><br></p>
 <div id="the-dataset" class="section level2">
 <h2>The Dataset</h2>
-<p>The dataset was sourced from the website <a href="https://ourworldindata.org/coronavirus/country/bolivia?country=~BOL">Our World in Data</a>. The website is from the organization with the same name, based on Oxford University. It has a research team focused on providing high quality open-source data for the scientific community across the world to tackle challenging problems such as pandemic.</p>
-<p>We have downloaded the <code>owid-covid-data.csv</code> file, which has COVID information about more than 190 countries across the world. Since our analysis will focus exclusively on Bolivia, we have filtered out all other countries from the table. <br></p>
+<p>As in the previous post, We are working with a dataset sourced from the website <a href="https://ourworldindata.org/coronavirus/country/bolivia?country=~BOL">Our World in Data</a>. The website is from the organization with the same name, based on Oxford University.</p>
+<p>We have downloaded the <code>owid-covid-data.csv</code> file, which has COVID information about more than 190 countries across the world. Since our analysis will focus exclusively on Argentina, we have filtered out all other countries from the table. <br></p>
 <p>The dataset is a multivariate time-series that comprises multiple features from the period of the 31th of December, 2019 to the 26th of August of 2020. It has 40 columns with 36 features of every country. Some directly related to the Covid-19 such as the total number of deaths, total number of deaths per million habitats number of tests per day and positive rate of tests. Other data are social and economic variables that are indirectly related to covid-19 spread such as the median age of the population, GDP per capita, percentage of smokers and much more. <br></p>
-<p>Given our restrictions of time and resources, unfortunately we will work only with a fraction of the data, tat will allow us to understand the spread of the virus in Bolivia.</p>
 <p><br></p>
 </div>
-<div id="table-1---covid-data-from-bolivia" class="section level2">
-<h2>Table 1 - Covid Data from Bolivia</h2>
-<p>In the following table one can observe the evolution of the total number of cases and deaths of COVID-19 in Bolivia across the year of 2020. The first recorded case in Bolivia was in the 21-Mar-2020, long after most countries in the world. <br></p>
-<p>The table is not in absolute numbers but in relative ones. All cases and deaths are in a 1:million hab. scale. This scale makes it easy to compare different countries that different populations.</p>
-<p>The table is interactive, so one can choose different ranges of data from the table. <br></p>
-<p>We are exposing in the table the number of new daily cases and deaths, but also accumulated numbers. Additionally, in the table we can see the number of tests and the positive rate.</p>
+<div id="visualisation-1---evolution-of-covid-19-in-argentina" class="section level2">
+<h2>Visualisation 1 - Evolution of COVID-19 in Argentina</h2>
+<p>In the following visualisations, we can observe the evolution of the number of cases and deaths of COVID-19 in Argentina across the year of 2020. The first recorded case in Argentina was in the 03-Apr-2020, after most countries in the world. <br></p>
+<p>In the following plots, for variables can be observed: 1. The number of new cases of Covid-19 in Argentina each day 2. The number of new deaths of Covid-19 in Argentina each day 3. The accumulated number of cases of Covid-19 in Argentina each day 3. The accumulated number of deaths of Covid-19 in Argentina each day</p>
+<p>In the each plots there are two y-axis. The reason behind it is that there is a relevant difference in magnitude between the presented variables in each plot.</p>
+<p>In the plot on the left one can see the number of total cases of covid-19 x new cases in Argentina. In the plot on the right one can see the number of total deaths of covid-19 x new deaths. Acummulated variables are represented as lines while the bars represent new numbers.</p>
+<p><img src="covid-argentina_files/figure-html/interactive-1.png" width="672" /><img src="covid-argentina_files/figure-html/interactive-2.png" width="672" /></p>
 <p><br></p>
-<p>Some notes about an attentive observation of the table are the following:<br> * The number of cases has increased sharply over days and months and it has gone through the pic recently. <br> * The number of tests has increased as well, which is something positive, as we know testing is a key strategy to fight the virus. <br> * The number of positive rates has also increased over the year, which might be associated with more accurate tests or an increase in the number of cases.</p>
+<p>Some notes about an attentive observation of the table are the following:<br> * The number of cases and deaths follow extremely similar patterns, as expected. * The pandemic has not gone through the pic yet in Argentina. The country is still experimenting a growth trend. * Observing rough numbers, the mortality rate in Argentina is about 2%. There have been ~ 7.5 thousand deaths and 300 thousand cases.</p>
 <p><br></p>
 </div>
-<div id="table-2---statistical-analysis---covid-data-from-bolivia" class="section level2">
-<h2>Table 2 - Statistical Analysis - Covid Data from Bolivia</h2>
+<div id="table-2---analysis-of-cases-per-region" class="section level2">
+<h2>Table 2 - Analysis of Cases per Region</h2>
 <p>Now, we will dive in the statistics of the new cases of Covid-19 in Bolivia. We will make this analysis by each month. We will how was the distribution of the number of new cases every month, the dispersion, the mean, median and so on.</p>
 <p>The central points one can observe in the table are the following:</p>
 <ol style="list-style-type: decimal">
@@ -332,6 +335,7 @@ $(document).ready(function () {
 </li>
 <li>As the number of cases increases every month, so does the dispersion of the data. It can be observed in the boxplots.</li>
 </ol>
+<p><img src="covid-argentina_files/figure-html/test%20-1.png" width="672" /></p>
 </div>
 
 
