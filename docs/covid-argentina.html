@@ -322,20 +322,16 @@ $(document).ready(function () {
 <p>In the plot on the left one can see the number of total cases of covid-19 x new cases in Argentina. In the plot on the right one can see the number of total deaths of covid-19 x new deaths. Acummulated variables are represented as lines while the bars represent new numbers.</p>
 <p><img src="covid-argentina_files/figure-html/interactive-1.png" width="672" /><img src="covid-argentina_files/figure-html/interactive-2.png" width="672" /></p>
 <p><br></p>
-<p>Some notes about an attentive observation of the table are the following:<br> * The number of cases and deaths follow extremely similar patterns, as expected. * The pandemic has not gone through the pic yet in Argentina. The country is still experimenting a growth trend. * Observing rough numbers, the mortality rate in Argentina is about 2%. There have been ~ 7.5 thousand deaths and 300 thousand cases.</p>
+<p>Some notes about an attentive observation of the table are the following:<br> * The number of cases and deaths follow extremely similar patterns, as expected.<br> * The pandemic has not gone through the pic yet in Argentina. The country is still experimenting a growth trend.<br> * Observing rough numbers, the mortality rate in Argentina is about 2%. There have been ~ 7.5 thousand deaths and 300 thousand cases. <br></p>
 <p><br></p>
 </div>
 <div id="table-2---analysis-of-cases-per-region" class="section level2">
 <h2>Table 2 - Analysis of Cases per Region</h2>
-<p>Now, we will dive in the statistics of the new cases of Covid-19 in Bolivia. We will make this analysis by each month. We will how was the distribution of the number of new cases every month, the dispersion, the mean, median and so on.</p>
-<p>The central points one can observe in the table are the following:</p>
-<ol style="list-style-type: decimal">
-<li>There is a crystal clear trend of increase in the number of new cases every month. <br></li>
-<li>Nevertheless, the month of August has recorded a smaller amount of cases than the others, which indicated the pic was in the previous month. <br><br />
-</li>
-<li>As the number of cases increases every month, so does the dispersion of the data. It can be observed in the boxplots.</li>
-</ol>
-<p><img src="covid-argentina_files/figure-html/test%20-1.png" width="672" /></p>
+<p>In our next step, we will make a regional analysis of Covid-19 in Argentina. To do so, we will make use of an plot called Choropleth Map. This thematic map allows us to observe patterns in proportion to a statistical variable that represents an aggregate summary of a geographic characteristic within an area. It can be used to analyse per-capita income, median age of population, and in our case, number of cases of Covid-19. To build this plot we make use of multiple libraries such as maptools, rgdal, raster, rgeos and ggplot. <br></p>
+<p>Argentina is subdivided into twenty-three provinces and one autonomous city (Buenos Aires city), which is the federal capital of the nation. The largest province by far, is Buenos Aires, which has a population of ~ 17.2 million people, in a country of ~ 44 million (38% of total). The second largest state by population is the province of Cordoba, that has 3.6 million people. Given the proportion of the province of Buenos Aires, not only as the most populated province, but also as the major economic center of the country, we expect higher numbers of Covid-19 in Buenos Aires than in any state.</p>
+<p><img src="covid-argentina_files/figure-html/test%20-1.png" width="864" /></p>
+<p>As we can see, in absolute numbers Buenos Aires has by far the largest numbers of Covid-19. To improve our analysis we will now</p>
+<p><img src="covid-argentina_files/figure-html/percentage%20-1.png" width="672" /></p>
 </div>
 
 

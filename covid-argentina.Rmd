@@ -21,16 +21,15 @@ library('dplyr')
 library('ggplot2')
 library('reshape2')
 library('gpclib')
-
-library(maptools)
-library(rgdal)
-library(raster)
-library(rgeos)
-library(ggalt)
-library(ggthemes)
-library(viridis)
-library(magrittr)
-library(osmdata)
+library('maptools')
+library('rgdal')
+library('raster')
+library('rgeos')
+library('ggalt')
+library('ggthemes')
+library('viridis')
+library('magrittr')
+library('osmdata')
 ```
 
 
@@ -170,30 +169,28 @@ ggplot(argentina_deaths, aes(x=Date)) +
 <br>
 
 Some notes about an attentive observation of the table are the following:<br>
-* The number of cases and deaths follow extremely similar patterns, as expected.
-* The pandemic has not gone through the pic yet in Argentina. The country is still experimenting a growth trend.
-* Observing rough numbers, the mortality rate in Argentina is about 2%. There have been ~ 7.5 thousand deaths and 300 thousand cases. 
+* The number of cases and deaths follow extremely similar patterns, as expected.<br>
+* The pandemic has not gone through the pic yet in Argentina. The country is still experimenting a growth trend.<br>
+* Observing rough numbers, the mortality rate in Argentina is about 2%. There have been ~ 7.5 thousand deaths and 300 thousand cases. <br>
 
 <br>
 
 ## Table 2 - Analysis of Cases per Region 
 
-Now, we will dive in the statistics of the new cases of Covid-19 in Bolivia. We will make this analysis by each month. We will how was the distribution of the number of new cases every month, the dispersion, the mean, median and so on.
+In our next step, we will make a regional analysis of Covid-19 in Argentina. To do so, we will make use of an plot called Choropleth Map. This thematic map allows us to observe patterns in proportion to a statistical variable that represents an aggregate summary of a geographic characteristic within an area. It can be used to analyse per-capita income, median age of population, and in our case, number of cases of Covid-19. To build this plot we make use of multiple libraries such as maptools, rgdal, raster, rgeos and ggplot. <br>
 
-The central points one can observe in the table are the following:
-
-1. There is a crystal clear trend of increase in the number of new cases every month. <br>
-2. Nevertheless, the month of August has recorded a smaller amount of cases than the others, which indicated the pic was in the previous month. <br>    
-3. As the number of cases increases every month, so does the dispersion of the data. It can be observed in the boxplots.  
+Argentina is subdivided into twenty-three provinces and one autonomous city (Buenos Aires city), which is the federal capital of the nation. The largest province by far, is Buenos Aires, which has a population of ~ 17.2 million people, in a country of ~ 44 million (38% of total). The second largest state by population is the province of Cordoba, that has 3.6 million people. Given the proportion of the province of Buenos Aires, not only as the most populated province, but also as the major economic center of the country, we expect higher numbers of Covid-19 in Buenos Aires than in any state.
 
 
-```{r test , results='asis', echo=FALSE, warning = FALSE, message = FALSE}
+```{r test , results='asis', echo=FALSE, warning = FALSE, message = FALSE, fig.width = 9}
+
+puntos <- read.csv('argentina_covid.csv')
 
 # as stated in the other answer, this is the same as your shapefile
 arg_adm <- raster::getData('GADM', country='ARG', level=1)
 
 # make the polygons a bit less verbose
-gSimplify(arg_adm, 0.01, topologyPreserve=TRUE) %>% 
+gSimplify(arg_adm, 0.01, topologyPreserve=TRUE) %>%
   SpatialPolygonsDataFrame(dat=arg_adm@data) -> arg_adm
 
 # turn them into a data frame
@@ -202,29 +199,106 @@ arg_map <- fortify(arg_adm, region="NAME_1")
 # reproducibly simulate some data
 puntos <- read.csv('argentina_covid.csv')
 
+# create centroids for labels
+cnames <- aggregate(cbind(long, lat) ~ id, data=arg_map,
+                    FUN=function(x)mean(range(x)))
 # plot it
-gg <- ggplot() 
+gg <- ggplot()
 
 # necessary in the new world of ggplot2 mapping O_o
 gg <- gg + geom_blank(data=arg_map, aes(long, lat))
 
 # draw the base polygon layer
-gg <- gg + geom_map(data=arg_map, map=arg_map, 
+gg <- gg + geom_map(data=arg_map, map=arg_map,
                     aes(map_id=id),
                     color="#b2b2b2", size=0.15, fill=NA)
 
 # fill in the polygons
-gg <- gg + geom_map(data=puntos, 
+gg <- gg + geom_map(data=puntos,
                     map=arg_map,
-                    aes(fill=log_numbers, 
+                    aes(fill=Total_numbers,
                         map_id=City),
-                    color="#b2b2b2", 
-                    size=0.15)
+                    color="#b2b2b2",
+                    size=0.15) + geom_text(data = cnames, aes(x = long, y = lat, label = id), size = 4, fontface = "bold")
 
-gg <- gg + scale_fill_viridis(option = 'inferno')
+
+gg <- gg + scale_fill_gradient(low="lightyellow",high="red3")
 gg <- gg + theme_map()
 gg <- gg + theme(legend.position=c(0.8, 0.1))
 gg
 
 ```
+
+
+
+
+As we can see, in absolute numbers Buenos Aires has by far the largest numbers of Covid-19. To improve our analysis we will now analyse by percentage. 
+In this way we will now the penetration of the virus in each location according to the total population. 
+
+
+```{r percentage , results='asis', echo=FALSE, warning = FALSE, message = FALSE}
+
+puntos <- read.csv('argentina_covid.csv')
+
+# as stated in the other answer, this is the same as your shapefile
+arg_adm <- raster::getData('GADM', country='ARG', level=1)
+
+# make the polygons a bit less verbose
+gSimplify(arg_adm, 0.01, topologyPreserve=TRUE) %>%
+  SpatialPolygonsDataFrame(dat=arg_adm@data) -> arg_adm
+
+# turn them into a data frame
+arg_map <- fortify(arg_adm, region="NAME_1")
+
+# reproducibly simulate some data
+puntos <- read.csv('argentina_covid.csv')
+
+# create centroids for labels
+cnames <- aggregate(cbind(long, lat) ~ id, data=arg_map,
+                    FUN=function(x)mean(range(x)))
+# plot it
+gg <- ggplot()
+
+# necessary in the new world of ggplot2 mapping O_o
+gg <- gg + geom_blank(data=arg_map, aes(long, lat))
+
+# draw the base polygon layer
+gg <- gg + geom_map(data=arg_map, map=arg_map,
+                    aes(map_id=id),
+                    color="#b2b2b2", size=0.15, fill=NA)
+
+# fill in the polygons
+gg <- gg + geom_map(data=puntos,
+                    map=arg_map,
+                    aes(fill=percentage,
+                        map_id=City),
+                    color="#b2b2b2",
+                    size=0.15) + geom_text(data = cnames, aes(x = long, y = lat, label = id), size = 4, fontface = "bold")
+
+
+gg <- gg + scale_fill_gradient(low="lightyellow",high="red3")
+gg <- gg + theme_map()
+gg <- gg + theme(legend.position=c(0.8, 0.1))
+gg
+
+```
+
+
+We observe from the second plot that Buenos Aires is the province most severely affected by Covid-19, but the proportion is not so different from the rest of the country.    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
