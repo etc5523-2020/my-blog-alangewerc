@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Alan Gewerc" />
 
+<meta name="date" content="2020-10-15" />
 
-<title>Alan Gewerc</title>
+<title>Self-reflection on the Shiny APP</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -292,15 +294,36 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Alan Gewerc</h1>
+<h1 class="title toc-ignore">Self-reflection on the Shiny APP</h1>
+<h4 class="author">Alan Gewerc</h4>
+<h4 class="date">10/15/2020</h4>
 
 </div>
 
 
-<p>Hello, Welcome to my blog!</p>
-<p>I am Master of Data Science student at Monash University and here you will find posts developed under the unit ETC5523 - Communicating with Data.</p>
-<p><br><br></p>
-<p><img src="IMG_2609.jpg" style="border-radius:50%" alt="drawing" width="250"/><br><br></p>
+<p><br> <img src="shiny-image.PNG" alt="drawing" width="1150"/><br><br> <em>Firts Page of the APP</em></p>
+<p><br></p>
+<p>Recently I have developed a Shiny APP to explore Covid-19 data for the unit <em>Communicating with Data - ETC5523</em> at Monash University. In this blog post I will present the APP, explain the features and make a reflection on what I think could be improved.</p>
+<p><br></p>
+<div id="introducing-the-app" class="section level1">
+<h1>Introducing the APP</h1>
+<p>The app was developed having a navbar and user may click in 2 webpages for interaction and the last one is the about section. The main purpose of the app is to give the user the ability to observe the evolution of the pandemic throughout the year of 2020 comparing numbers all countries in the world countries. To do so, we use different tools such as maps, plots and tables. Multiple libraries were also used for data manipulation, visualization and formatting such as <code>dplyr</code>, <code>ggplot2</code>, <code>plotly</code>, <code>gt</code>, <code>leaflet</code> and much more.</p>
+<p><br></p>
+<div id="dataset" class="section level3">
+<h3>Dataset</h3>
+<p>The dataset is a multivariate time-series that comprises multiple features from the period of the 31th of December, 2019 to the 27th of semptember of 2020. It has multiple variables of every country. Some directly related to the Covid-19 such as the total number of deaths, total number of deaths per million habitats number of tests per day and positive rate of tests. Others relate to social and economic variables that were not explored in this project. The dataset was sourced from the website <a href="https://ourworldindata.org/coronavirus/country/bolivia?country=~BOL">Our World in Data</a>. The website is from the organization with the same name, based on Oxford University.</p>
+<p><br></p>
+</div>
+<div id="page-1" class="section level3">
+<h3>Page 1</h3>
+<p>On the top of the page instructions can be found on how to operate and interact with the features. Scrolling down, there is a world dot-density map and an interactive table. These features are connected to input objects from Shiny in the following manner: - An slider input chooses the day of the year that will be exposed both in the dot-density map and the table. - Action buttons are used to select what variable will be presented in the dot-density map. The dot density map was created with leaflet and represents the most affected countries by the pandemic. The size of the dots is proportional to to the variable chosen in the action button, which can be either <em>Accumulated Number of Cases</em> or <em>Accumulated Number of Cases per Million Habitants</em>. <br> In the table next to the map-plot, the user will know the top-10 countries with more <em>new cases</em> in the particular chosen day in the sliderinput. Other variables that are also observed are <em>new cases per 1 per Million Habitants</em>, <em>Accumulated Number of Cases</em> and <em>Accumulated Number of Cases per Million Habitants</em></p>
+<p><br></p>
+</div>
+<div id="page-2" class="section level3">
+<h3>Page 2</h3>
+<p>In the second page we can analyse the evolution of a range of eight variables such as <code>total deaths</code>, <code>total cases</code> and more related to COVID-19. Stacked barplots were use where each of the bars referes to a country. When opening this webpage the chosen countries are the US, India and Brazil, 3 of the most affected countries by the pandemic. The user can choose with the select box as many countries as he wants. To analyse a unique day of a country you can hover over or click in the bar. When clicking it should color in blue the country. The plots were made with plotly.</p>
+</div>
+</div>
 
 
 

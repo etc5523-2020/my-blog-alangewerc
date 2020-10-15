@@ -5,10 +5,10 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "Bolivia: COVID-19 "
+    - text: "Bolivia: COVID-19"
       href:  covid-bolivia.html
-    - text: "Argentina: COVID-19 "
-      href:  covid-bolivia.html
+    - text: "Argentina: COVID-19"
+      href:  covid-argentina.html
 
 output:
   html_document:

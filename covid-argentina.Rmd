@@ -70,7 +70,7 @@ In the plot on the left one can see the number of total cases of covid-19 x new 
 ```{r interactive, echo=FALSE}
 
 # read the data
-data <- read.csv('owid-covid-data.csv', stringsAsFactors = FALSE)
+data <- read.csv('covid-data.csv', stringsAsFactors = FALSE)
 
 # filter Argentina
 argentina_df <- data %>% 

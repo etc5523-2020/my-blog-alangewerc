@@ -65,7 +65,7 @@ We are exposing in the table the number of new daily cases and deaths, but also 
 
 
 ```{r interactive, , echo=FALSE}
-data <- read.csv('owid-covid-data.csv')
+data <- read.csv('covid-data.csv')
 bolivia_df <- data %>% 
   filter(location  == "Bolivia")
 
@@ -116,7 +116,7 @@ The central points one can observe in the table are the following:
 
 ```{r test , results='asis', echo=FALSE}
 
-data <- read.csv('owid-covid-data.csv')
+data <- read.csv('covid-data.csv')
 
 bolivia_df <- data %>% 
   filter(location  == "Bolivia")
