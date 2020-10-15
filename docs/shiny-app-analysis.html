@@ -13,7 +13,7 @@
 
 <meta name="date" content="2020-10-15" />
 
-<title>Self-reflection on the Shiny APP</title>
+<title>Self-reflection on the Shiny App</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -282,6 +282,9 @@ $(document).ready(function () {
 <li>
   <a href="covid-argentina.html">Argentina: COVID-19</a>
 </li>
+<li>
+  <a href="shiny-app-analysis.html">Shiny App: Self-reflection</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -294,7 +297,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Self-reflection on the Shiny APP</h1>
+<h1 class="title toc-ignore">Self-reflection on the Shiny App</h1>
 <h4 class="author">Alan Gewerc</h4>
 <h4 class="date">10/15/2020</h4>
 
@@ -303,37 +306,38 @@ $(document).ready(function () {
 
 <p><br> <img src="shiny-image.PNG" alt="drawing" width="1150"/><br><br> <em>Firts Page of the APP</em></p>
 <p><br></p>
-<p>Recently I have developed a Shiny APP to explore Covid-19 data for the unit <em>Communicating with Data - ETC5523</em> at Monash University. In this blog post I will present the APP, explain the features and make a reflection on what I think could be improved.</p>
+<p>Recently I have developed a Shiny APP to explore Covid-19 data for the unit <em>Communicating with Data - ETC5523</em> at Monash University. In this blog, post I will present the APP, explain the features and make a reflection on what I think could be improved.</p>
 <p><br></p>
 <div id="introducing-the-app" class="section level1">
 <h1>Introducing the APP</h1>
-<p>The app was developed having a navbar and user may click in 2 webpages for interaction and the last one is the about section. The main purpose of the app is to give the user the ability to observe the evolution of the pandemic throughout the year of 2020 comparing numbers all countries in the world countries. To do so, we use different tools such as maps, plots and tables. Multiple libraries were also used for data manipulation, visualization and formatting such as <code>dplyr</code>, <code>ggplot2</code>, <code>plotly</code>, <code>gt</code>, <code>leaflet</code> and much more.</p>
+<p>The app was developed having a navbar and user may click in 2 webpages for interaction, and the last one is the about section. The main purpose of the app is to give the user the ability to observe the evolution of the pandemic throughout the year of 2020 comparing numbers of all countries in the world. To do so, we use different tools such as maps, plots and tables. Multiple libraries were also used for data manipulation, visualization and formatting such as <code>dplyr</code>, <code>ggplot2</code>, <code>plotly</code>, <code>gt</code>, <code>leaflet</code> and much more.</p>
 <div id="dataset" class="section level3">
 <h3>Dataset</h3>
 <p>The dataset is a multivariate time-series that comprises multiple features from the period of the 31th of December, 2019 to the 27th of semptember of 2020. It has multiple variables of every country. Some directly related to the Covid-19 such as the total number of deaths, total number of deaths per million habitats number of tests per day and positive rate of tests. Others relate to social and economic variables that were not explored in this project. The dataset was sourced from the website <a href="https://ourworldindata.org/coronavirus/country/bolivia?country=~BOL">Our World in Data</a>. The website is from the organization with the same name, based on Oxford University.</p>
 </div>
 <div id="page-1---dot-density-map-and-table" class="section level3">
 <h3>Page 1 - Dot Density Map and Table</h3>
-<p>On the top of the page instructions can be found on how to operate and interact with the features. Scrolling down, there is a world dot-density map and an interactive table. These features are connected to input objects from Shiny in the following manner: - An slider input chooses the day of the year that will be exposed both in the dot-density map and the table. - Action buttons are used to select what variable will be presented in the dot-density map. The dot density map was created with leaflet and represents the most affected countries by the pandemic. The size of the dots is proportional to to the variable chosen in the action button, which can be either <em>Accumulated Number of Cases</em> or <em>Accumulated Number of Cases per Million Habitants</em>. <br> In the table next to the map-plot, the user will know the top-10 countries with more <em>new cases</em> in the particular chosen day in the sliderinput. Other variables that are also observed are <em>new cases per 1 per Million Habitants</em>, <em>Accumulated Number of Cases</em> and <em>Accumulated Number of Cases per Million Habitants</em></p>
+<p>On the top of the page, instructions can be found on how to operate and interact with the features. Scrolling down, there is a world dot-density map and an interactive table. These features are connected to input objects from Shiny in the following manner: - An slider input chooses the day of the year that will be exposed both in the dot-density map and the table. - Action buttons are used to select what variable will be presented in the dot-density map. The dot density map was created with <code>leaflet</code> and represents the most affected countries by the pandemic. The size of the dots is proportional to the variable chosen in the action button, which can be either <em>Accumulated Number of Cases</em> or <em>Accumulated Number of Cases per Million Habitants</em>. <br> In the table next to the map-plot, the user will know the top-10 countries with more <em>new cases</em> in the particular chosen day in the sliderinput. Other variables that are also observed are <em>new cases per 1 per Million Habitants</em>, <em>Accumulated Number of Cases</em> and <em>Accumulated Number of Cases per Million Habitants</em></p>
 </div>
 <div id="page-2---barplots-with-plotly" class="section level3">
 <h3>Page 2 - Barplots with Plotly</h3>
-<p>In the second page we can analyse the evolution of a range of eight variables such as <code>total deaths</code>, <code>total cases</code> and more related to COVID-19. Stacked barplots were use where each of the bars referes to a country. When opening this webpage the chosen countries are the US, India and Brazil, 3 of the most affected countries by the pandemic. The user can choose with the select box as many countries as he wants. To analyse a unique day of a country you can hover over or click in the bar. When clicking it should color in blue the country. The plots were made with plotly.</p>
+<p>In the second page we can analyze the evolution of a range of eight variables such as <code>total deaths</code>, <code>total cases</code> and more related to COVID-19. Stacked barplots were used where each of the bars refers to a country. When opening this webpage the plotted countries are the US, India and Brazil, 3 of the most affected countries by the pandemic. The user can modify the composition of the plots with the select box and choose as many countries as he wants. To analyze a unique day of a country it is possible to hover over or click in the bar. When clicking it should color in blue the country. The plots were made with plotly.</p>
 <p><br></p>
 </div>
 </div>
 <div id="self-review" class="section level1">
 <h1>Self Review</h1>
-<p>Now we will make a critical analysis of the shiny app, focusing on answering the proposed questions that will inspire ourselves to further improve this project. Yo start our analysis we will explore the positive points of the APP.</p>
+<p>Now we will make a critical analysis of the shiny app, focusing on answering the proposed questions that will inspire ourselves to further improve this project. To start our analysis we will explore the positive points of the APP.</p>
 <div id="what-did-you-do-well" class="section level3">
 <h3>What did you do well?</h3>
 <p>We believe the app has fulfilled it’s goal to present for the user a good-looking and explanatory visual comparison of the evolution of COVID-19 across all countries. In the initial page we have made use of a dot-density map plot with the package <code>leaflet</code>, that was able to transmit very rapidly for the user which countries were the most affected by the pandemic and which had a more soft experience. To add to our visualization we inserted the option of visualizing the numbers either in absolute or relative numbers (divided per 1 million habbitants).</p>
-<p>I consider that the slider input to choose the date was also a happy choice for this page, as it gives a better dimension of time when compared to an input box from which the user would choose the date. By sliding the pointer the user could see clear trends of growth of the numbers in each country. Also, the slider was integrated with the table that presented the most affected countries by Covid-19 in a particular date. If one pays attention to the table when sliding the pointer he will see which countries were having more cases according to the moment of the year.</p>
+<p>I consider that the slider input to choose the date was also a happy choice for this page (instead of a inputbox). By sliding the pointer the user could see clear trends of growth of covid numbers in each country. Also, the slider was integrated with the table that presented the most affected countries by Covid-19 in a particular date. If one pays attention to the table when sliding the pointer he will see which countries were having more cases according to the moment of the year.</p>
 <p>The second page also offered good comparative visualizations of multiple countries, but this time using stacked barplots. The dimensions of the plots were carefully chosen so that the page could fit all the eight plots in the page giving the user the opportunity to analyze multiple variables at the same time. Having stacked barplots instead of side-by-side plots allowed the user to choose many countries and have a clear notion of the dimensions in the data.</p>
 </div>
 <div id="what-are-the-points-you-can-improve-on" class="section level3">
 <h3>What are the points you can improve on?</h3>
-<p>Given limitations on time, I believe there are some points of improvement that could enhance the App. A problem was observed in particular with legend of plots in the second page. Unfortunately the legend was poorly placed and as a consequence one of the plots was resided to fit the legends every time the user updated the analyzed countries. At the same time, all other plots would remain with the same size making the page less proportional.</p>
+<p>Given limitations on time, I believe there are some points of improvement that could enhance the App. A problem was observed in particular with legend of plots in the second page. Unfortunately the legend was poorly placed under the last plot in the right side, and as a consequence this plot was resided to fit the legends every time the user updated the analyzed countries. At the same time, all other plots would remain with the same size making the page less proportional.</p>
+<p>Other things that could improve relate to the design of the app. Maybe the app would look better if there was only one page instead of the 3 observed in the navbar. Having instructions in the top of the page was also possibly not the best visual option, and it could be brought to a sidebar panel on the left.</p>
 </div>
 <div id="what-are-some-things-that-youd-like-to-add-thats-plausible" class="section level3">
 <h3>What are some things that you’d like to add that’s plausible?</h3>
@@ -341,13 +345,19 @@ $(document).ready(function () {
 <ol style="list-style-type: decimal">
 <li>Making the sliderinput animated with a bottom, which requires proper management of the animation speed. This is necessary because there are more than 250 days of COVID-pandemic, so the slider shouldn’t stop at every day to show the numbers.</li>
 <li>Add more action buttons to show different variables in the dot density map such as <code>tests per case</code>, <code>positive rate</code> and <code>tests units</code>, all of each available in the covid dataset.</li>
-<li></li>
+<li>Adding a new page with in-depth statistical analysis to find insights on patterns of spread of covid-19.</li>
+<li>A new page dedicated to forecasting of the numbers in the next 30 days by country using models such ARIMA.</li>
 </ol>
 </div>
 <div id="what-are-some-things-that-youd-like-to-add-that-cannot-be-done-yet-due-to-limitation-in-data-or-technology" class="section level3">
 <h3>What are some things that you’d like to add that cannot be done yet due to limitation in data or technology?</h3>
-<p>The biggest struggle faced in this work was regarding the speed it takes for an update in plotly. After tirelessly researching about the topic I am convinced that there is a limitation in technology that does not allow my second page which has 8 plots using plotly to update in less than 3-4 seconds. Similarly, I would like the leaflet plot to be faster, altough it is not as slow as the plotly plots. The app could also be improved if we had regional data available, which means by city, or state (not only by country). Some countries as the United States and Brazil are big and it would be better to show where are the hotspots instead of aggregate numbers.</p>
+<p>The biggest struggle faced in this work was regarding the speed it takes for an update in plotly. After tirelessly researching about the topic I am convinced that there is a limitation in technology that does not allow my second page which has 8 plots using plotly to update in less than 3-4 seconds. Similarly, I would like the leaflet plot to be faster, although it is not as slow as the plotly plots. The app could also be improved if we had regional data available, which means by city, or state (not only by country). Some countries as the United States and Brazil are big and it would be better to show where are the hotspots instead of aggregate numbers.</p>
+<p><br></p>
 </div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>Given imposed time constraints we believe our app has successfully accomplished its mission, and it is now a valuable piece of visualization and analysis to be added in a future to my portfolio. It allows user to have a clear picture of the world situation of COVID-19 in a few seconds thanks to the leaftlet map and it offers tools to compare the countries such as stacked barplots. However, some tasks could enhance this project, such as making animated visualizations with the map and using more data with more granularity.</p>
 </div>
 
 

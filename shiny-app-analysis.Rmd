@@ -1,5 +1,5 @@
 ---
-title: "Self-reflection on the Shiny APP"
+title: "Self-reflection on the Shiny App"
 author: "Alan Gewerc"
 date: "10/15/2020"
 output: html_document

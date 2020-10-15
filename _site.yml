@@ -9,7 +9,7 @@ navbar:
       href:  covid-bolivia.html
     - text: "Argentina: COVID-19"
       href:  covid-argentina.html
-    - text: "Shiny APP: Self-reflection"
+    - text: "Shiny App: Self-reflection"
       href:  shiny-app-analysis.html
 
 output:
